@@ -1,0 +1,60 @@
+package com.sambathresmey.telegram_service.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.ActionType;
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+@SuppressWarnings("deprecation")
+public class TelegramService extends TelegramLongPollingBot {
+
+    @Value("${telegram.bot.token}")
+    private String botToken;
+
+    @Value("${telegram.bot.username}")
+    private String botUsername;
+
+    @Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String messageText = update.getMessage().getText();
+            long chatId = update.getMessage().getChatId();
+
+            sendTypingAction(chatId);
+            // Create a response message
+            SendMessage message = new SendMessage();
+            message.setChatId(String.valueOf(chatId));
+            message.setText("អ្នកបាននិយាយថា ៖ " + messageText);
+
+            try {
+                execute(message); // Sending the message
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void sendTypingAction(long chatId) {
+        SendChatAction action = new SendChatAction();
+        action.setChatId(String.valueOf(chatId));
+        action.setAction(ActionType.TYPING);
+        try {
+            execute(action);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getBotUsername() {
+        return botUsername;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
+    }
+}

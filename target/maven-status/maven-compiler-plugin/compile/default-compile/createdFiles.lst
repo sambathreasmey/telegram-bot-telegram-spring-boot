@@ -1,0 +1,4 @@
+com\sambathresmey\telegram_service\TelegramServiceApplication.class
+com\sambathresmey\telegram_service\config\TelegramBotConfig.class
+com\sambathresmey\telegram_service\schedule\ScheduledTaskService.class
+com\sambathresmey\telegram_service\service\TelegramService.class
