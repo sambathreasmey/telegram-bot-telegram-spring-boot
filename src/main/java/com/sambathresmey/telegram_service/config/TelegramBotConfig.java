@@ -11,7 +11,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import com.sambathresmey.telegram_service.service.TelegramService;
 
 @Configuration
-@EnableScheduling
+// @EnableScheduling
 public class TelegramBotConfig {
 
     @Bean
